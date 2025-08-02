@@ -22,20 +22,78 @@
 	<article class="post">
       <h2>Обновление</h2>
       <div class="date">27 июля 2025</div>
+	  <div class="days-passed"></div>
       <p>Сайт теперь более продуманный в плане дизайна, убрали возможность выделять вверху кнопки, добавили кнопку назад на странице "о нас" и убрали embed, который никому не нужен.</p>
-    </article>
-	
-	<article class="post">
-      <h2>Следующий шаг</h2>
-      <div class="date">16 мая 2025</div>
-      <p>Если вы посетитель, то вы можете нажать на различные кнопки в панели наверху.</p>
     </article>
 	
     <article class="post">
       <h2>Добро пожаловать</h2>
       <div class="date">16 мая 2025</div>
+	  <div class="days-passed"></div>
       <p>Это - наш первый пост на этом сайте, мы постараемся обновлять информацию касательно сайта и всей команды в целом!</p>
     </article>
+
+    <article class="post">
+      <h2>Следующий шаг</h2>
+      <div class="date">16 мая 2025</div>
+	  <div class="days-passed"></div>
+      <p>Если вы посетитель, то вы можете нажать на различные кнопки в панели наверху.</p>
+    </article>
+	<script>
+		document.addEventListener("DOMContentLoaded", function () {
+		  const monthNames = {
+			ru: [
+			  "января", "февраля", "марта", "апреля", "мая", "июня",
+			  "июля", "августа", "сентября", "октября", "ноября", "декабря"
+			]
+		  };
+
+		  document.querySelectorAll(".post").forEach(post => {
+			const dateEl = post.querySelector(".date");
+			const outputEl = post.querySelector(".days-passed");
+
+			if (!dateEl || !outputEl) return;
+
+			const dateText = dateEl.textContent.trim();
+			const [day, monthName, year] = dateText.split(" ");
+			const monthIndex = monthNames.ru.indexOf(monthName);
+			const postDate = new Date(parseInt(year), monthIndex, parseInt(day));
+			const now = new Date();
+
+			let years = now.getFullYear() - postDate.getFullYear();
+			let months = now.getMonth() - postDate.getMonth();
+			let days = now.getDate() - postDate.getDate();
+
+			if (days < 0) {
+			  months--;
+			  const prevMonth = new Date(now.getFullYear(), now.getMonth(), 0);
+			  days += prevMonth.getDate();
+			}
+
+			if (months < 0) {
+			  years--;
+			  months += 12;
+			}
+
+			// форматирование
+			let parts = [];
+			if (years > 0) parts.push(`${years} ${declension(years, ['год', 'года', 'лет'])}`);
+			if (months > 0) parts.push(`${months} ${declension(months, ['месяц', 'месяца', 'месяцев'])}`);
+			if (days > 0 || parts.length === 0) parts.push(`${days} ${declension(days, ['день', 'дня', 'дней'])}`);
+
+			outputEl.textContent = `${parts.join(" ")} назад`;
+		  });
+
+		  function declension(number, words) {
+			number = Math.abs(number) % 100;
+			let n1 = number % 10;
+			if (number > 10 && number < 20) return words[2];
+			if (n1 > 1 && n1 < 5) return words[1];
+			if (n1 == 1) return words[0];
+			return words[2];
+		  }
+		});
+	</script>
   </main>
 </body>
 </html>
