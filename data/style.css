@@ -75,3 +75,22 @@ main {
   color: #5f6368;
   margin-bottom: 1rem;
 }
+
+.date-container {
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.post .date {
+  font-size: 0.9rem;
+  color: #5f6368;
+  margin-bottom: 0;
+}
+
+.days-passed {
+  font-size: 0.8rem;
+  color: #999;
+  font-style: italic;
+}
+
